@@ -1,0 +1,305 @@
+CREATE DATABASE LIBRARYDB;
+USE LIBRARYDB;
+
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY,
+    book_name VARCHAR(100),
+    author VARCHAR(100),
+    price DECIMAL(10,2),
+    category VARCHAR(50),
+    stock_quantity INT
+);
+
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY,
+    member_name VARCHAR(100),
+    city VARCHAR(50),
+    phone VARCHAR(15),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Borrow (
+    borrow_id INT PRIMARY KEY,
+    book_id INT,
+    member_id INT,
+    borrow_date DATE,
+    return_date DATE
+);
+
+INSERT INTO Books
+(book_id, book_name, author, price, category, stock_quantity)
+VALUES
+(101, 'SQL BOOK', 'JOHN', 500, 'Technology', 20),
+(102, 'PYTHON', 'GUIDO', 600, 'Technology', 18),
+(103, 'DATA SCIENCE', 'SHREE', 800, 'Technology', 20),
+(104, 'DATA ANALYST', 'SHARMI', 700, 'Education', 45),
+(105, 'WINGS OF FIRE', 'MONI', 450, 'Fiction', 62),
+(106, 'JAVA PROGRAMMING', 'JAMES', 750, 'Technology', 15),
+(107, 'MACHINE LEARNING', 'ANDREW', 900, 'Technology', 12),
+(108, 'DBMS', 'KORTH', 550, 'Education', 25),
+(109, 'WEB DESIGN', 'PETER', 400, 'Technology', 8),
+(110, 'C PROGRAMMING', 'DENNIS', 350, 'Education', 30);
+
+INSERT INTO Members
+(member_id, member_name, city, phone, email)
+VALUES
+(201, 'Jaya', 'Chennai', '8015537464', 'jaya@gmail.com'),
+(202, 'Sharmi', 'Madurai', '9884742138', 'sharmi@gmail.com'),
+(203, 'Priya', 'Coimbatore', '9876543210', 'priya@gmail.com'),
+(204, 'Divya', 'Salem', '9876501234', 'divya@gmail.com'),
+(205, 'Kaviya', 'Trichy', '9876512345', 'kaviya@gmail.com'),
+(206, 'Meena', 'Tirunelveli', '9876523456', 'meena@gmail.com'),
+(207, 'Anu', 'Nagercoil', '9876534567', 'anu@gmail.com'),
+(208, 'Vijay', 'Madurai', '9876545678', 'vijay@gmail.com');
+
+INSERT INTO Borrow
+(borrow_id, book_id, member_id, borrow_date, return_date)
+VALUES
+(301, 101, 201, '2026-09-01', NULL),
+(302, 102, 202, '2026-09-02', NULL),
+(303, 103, 203, '2026-09-03', NULL),
+(304, 101, 204, '2026-09-04', NULL),
+(305, 105, 205, '2026-09-05', NULL),
+(306, 105, 206, '2026-09-06', NULL),
+(307, 107, 207, '2026-09-07', NULL),
+(308, 102, 201, '2026-09-08', NULL),
+(309, 103, 202, '2026-09-09', NULL),
+(310, 104, 203, '2026-09-10', NULL);
+
+INSERT INTO Books
+(book_id, book_name, author, price, category, stock_quantity)
+VALUES
+(111, 'WEB DEVELOPMENT', 'PETER', 700, 'Technology', 9);
+
+INSERT INTO Members
+(member_id, member_name, city, phone, email)
+VALUES
+(209, 'Arun', 'Chennai', '9876598765', 'arun@gmail.com');
+
+INSERT INTO Borrow
+(borrow_id, book_id, member_id, borrow_date, return_date)
+VALUES
+(311, 111, 209, '2026-09-15', NULL);
+
+SELECT * FROM Books;
+SELECT * FROM Members;
+SELECT * FROM Borrow;
+
+UPDATE Books
+SET price = 850
+WHERE book_id = 103;
+
+UPDATE Books
+SET price = price * 1.10
+WHERE category = 'Technology';
+
+UPDATE Books
+SET stock_quantity = stock_quantity + 5;
+
+UPDATE Members
+SET city = 'Chennai'
+WHERE member_id = 202;
+
+UPDATE Members
+SET email = 'newemail@gmail.com'
+WHERE member_id = 203;
+
+UPDATE Books
+SET category = 'Education'
+WHERE book_id = 104;
+
+UPDATE Borrow
+SET return_date = '2026-09-20'
+WHERE borrow_id = 301;
+
+DELETE FROM Books
+WHERE book_id = 106;
+
+DELETE FROM Members
+WHERE member_id = 208;
+
+DELETE FROM Borrow
+WHERE borrow_id = 310;
+
+DELETE FROM Books
+WHERE stock_quantity = 0;
+
+SELECT * FROM Books;
+
+SELECT book_name, author
+FROM Books;
+
+SELECT book_name, category, price
+FROM Books;
+
+SELECT *
+FROM Books
+WHERE price > 500;
+
+SELECT *
+FROM Books
+WHERE price < 500;
+
+SELECT *
+FROM Books
+WHERE price BETWEEN 300 AND 800;
+
+SELECT *
+FROM Books
+WHERE category = 'Technology';
+
+SELECT *
+FROM Books
+WHERE author = 'JOHN';
+
+SELECT *
+FROM Books
+WHERE book_name LIKE 'S%';
+
+SELECT *
+FROM Books
+WHERE book_name LIKE '%SQL%';
+
+SELECT *
+FROM Books
+WHERE category IN ('Technology', 'Education');
+
+SELECT *
+FROM Books
+WHERE price <> 500;
+
+SELECT *
+FROM Books
+WHERE stock_quantity > 10;
+
+SELECT *
+FROM Books
+WHERE stock_quantity BETWEEN 5 AND 15;
+
+SELECT *
+FROM Books
+ORDER BY price ASC;
+
+SELECT *
+FROM Books
+ORDER BY price DESC;
+
+SELECT *
+FROM Books
+ORDER BY book_name ASC;
+
+SELECT *
+FROM Books
+ORDER BY category ASC, price ASC;
+
+SELECT *
+FROM Books
+ORDER BY price DESC
+LIMIT 3;
+
+SELECT *
+FROM Books
+ORDER BY price ASC
+LIMIT 3;
+
+SELECT *
+FROM Books
+ORDER BY stock_quantity DESC
+LIMIT 5;
+
+SELECT *
+FROM Members
+ORDER BY member_name ASC
+LIMIT 5;
+
+SELECT *
+FROM Borrow
+ORDER BY borrow_date DESC
+LIMIT 5;
+
+SELECT COUNT(*) AS total_books
+FROM Books;
+
+SELECT COUNT(*) AS total_members
+FROM Members;
+
+SELECT COUNT(*) AS total_borrow_records
+FROM Borrow;
+
+SELECT SUM(stock_quantity) AS total_stock
+FROM Books;
+
+SELECT SUM(price) AS total_price
+FROM Books;
+
+SELECT AVG(price) AS average_price
+FROM Books;
+
+SELECT MAX(price) AS maximum_price
+FROM Books;
+
+SELECT MIN(price) AS minimum_price
+FROM Books;
+
+SELECT MAX(price) - MIN(price) AS price_difference
+FROM Books;
+
+SELECT AVG(stock_quantity) AS average_stock
+FROM Books;
+
+SELECT category, COUNT(*) AS total_books
+FROM Books
+GROUP BY category;
+
+SELECT category, AVG(price) AS average_price
+FROM Books
+GROUP BY category;
+
+SELECT category, MAX(price) AS highest_price
+FROM Books
+GROUP BY category;
+
+SELECT category, MIN(price) AS lowest_price
+FROM Books
+GROUP BY category;
+
+SELECT category, SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category;
+
+SELECT category, SUM(price * stock_quantity) AS total_value
+FROM Books
+GROUP BY category;
+
+SELECT category, COUNT(*) AS total_books
+FROM Books
+GROUP BY category
+HAVING COUNT(*) > 2;
+
+SELECT category, AVG(price) AS average_price
+FROM Books
+GROUP BY category
+HAVING AVG(price) > 500;
+
+SELECT author, COUNT(*) AS total_books
+FROM Books
+GROUP BY author;
+
+SELECT author, AVG(price) AS average_price
+FROM Books
+GROUP BY author;
+
+SELECT author, COUNT(*) AS total_books
+FROM Books
+GROUP BY author
+HAVING COUNT(*) > 1;
+
+SELECT category, SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category
+HAVING SUM(stock_quantity) > 20;
+
+SELECT author, AVG(price) AS average_price
+FROM Books
+GROUP BY author
+HAVING AVG(price) > 600;
