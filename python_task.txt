@@ -1,0 +1,84 @@
+import mysql.connector
+import pandas as pd
+import matplotlib.pyplot as plt
+from sqlalchemy import create_engine
+from urllib.parse import quote_plus
+
+conn = mysql.connector.connect(
+    host="127.0.0.1",
+    port=3306,
+    user="root",
+    password="shree",
+    database="LibraryDB"
+)
+
+print("MySQL connected successfully!")
+
+cursor = conn.cursor()
+cursor.execute("SHOW TABLES")
+
+for table in cursor.fetchall():
+    print(table)
+
+cursor.close()
+conn.close()
+
+
+username = "root"
+password = quote_plus("shree")
+
+engine = create_engine(
+    f"mysql+pymysql://{username}:{password}@127.0.0.1:3306/LibraryDB"
+)
+
+books = pd.read_sql(
+    "SELECT book_id, book_name, category, price, stock_quantity AS stock FROM Books",
+    engine
+)
+
+print(books.head(10))
+print(books.info())
+
+
+average_price = books["price"].mean()
+print("Average Book Price:", average_price)
+
+
+most_expensive = books.loc[books["price"].idxmax()]
+print("Most Expensive Book:")
+print(most_expensive)
+
+
+cheapest = books.loc[books["price"].idxmin()]
+print("Cheapest Book:")
+print(cheapest)
+
+
+category_count = books["category"].value_counts()
+print("Books by Category:")
+print(category_count)
+
+
+average_price_category = books.groupby("category")["price"].mean()
+print("Average Price by Category:")
+print(average_price_category)
+
+
+category_count.plot(kind="pie")
+plt.title("Number of Books by Category")
+plt.ylabel("")
+plt.show()
+
+
+average_price_category.plot(kind="bar")
+plt.title("Average Book Price by Category")
+plt.xlabel("Category")
+plt.ylabel("Average Price")
+plt.show()
+
+
+plt.scatter(books["price"], books["stock"])
+plt.title("Book Price vs Stock")
+plt.xlabel("Price")
+plt.ylabel("Stock")
+plt.show()
